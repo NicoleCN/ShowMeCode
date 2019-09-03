@@ -26,17 +26,13 @@ int Audio::resampleAudio() {
     AVFrame *avFrame = av_frame_alloc();
     //一帧一帧去解析
     //Packet转换成pcm的过程
-    Log("resampleAudio");
     while (playerStatus != NULL && !playerStatus->isExit) {
         avPacket = mpPacketQueue->pop();
-        Log("popQueue");
         int packetCode = avcodec_send_packet(avCodecContext, avPacket);
         if (packetCode == 0) {
-            Log("packetCode == 0");
             //接受frame
             int codecReceiveFrameRes = avcodec_receive_frame(avCodecContext, avFrame);
             if (codecReceiveFrameRes == 0) {
-                Log("codecReceiveFrameRes = 0");
                 //表示没错误
                 //然后每帧都要重采样
                 //真正重采样 调用重采样的方法，返回值是返回重采样的个数，也就是 pFrame->nb_samples
@@ -75,7 +71,6 @@ void Audio::play() {
 
 void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
     Audio *pAudio = (Audio *) pContext;
-    Log("开始重采样计算");
     int dataSize = pAudio->resampleAudio();
     // 这里为什么报错，留在后面再去解决
     (*caller)->Enqueue(caller, pAudio->resampleOutBuffer, dataSize);
@@ -85,7 +80,6 @@ void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
  * 固定格式
  */
 void Audio::initCreateOpenSLES() {
-    Log("initCreateOpenSLES");
     /*OpenSLES OpenGLES 都是自带的
     XXXES 与 XXX 之间可以说是基本没有区别，区别就是 XXXES 是 XXX 的精简
     而且他们都有一定规则，命名规则 slXXX() , glXXX3f*/
@@ -139,7 +133,6 @@ void Audio::initCreateOpenSLES() {
     // 3.5 设置播放状态
     (*pPlayItf)->SetPlayState(pPlayItf, SL_PLAYSTATE_PLAYING);
     // 3.6 调用回调函数
-    Log("playerCallback");
     playerCallback(playerBufferQueue, this);
 }
 
@@ -161,7 +154,6 @@ void Audio::release() {
 }
 
 void Audio::privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
-    Log("privateAnalysisStream");
     //重采样start
     //输出的
     int64_t out_ch_layout = AV_CH_LAYOUT_STEREO;

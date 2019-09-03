@@ -22,7 +22,6 @@ void Media::analysisStream(ThreadMode threadMode, AVFormatContext *avFormatConte
 }
 
 void Media::publicAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
-    Log("publicAnalysisStream");
     //从全局上下文里面拿到stream的相关信息
     AVCodecParameters *pParameters = avFormatContext->streams[streamIndex]->codecpar;
     //因为avcodec_find_decoder要先拿coderId
