@@ -91,4 +91,6 @@ public class MediaPlayerZ {
     private native void nativePlay();
 
     public native void setSurface(Surface surface);
+
+    public native String getEncryptString(String str);
 }

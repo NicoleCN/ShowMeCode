@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements MediaPreparedList
         loopView.setStringItems(getDataList());
         mediaPlayerZ = new MediaPlayerZ();
         mediaPlayerZ.setPreparedListener(this);
-        textView.setText("123");
+        textView.setText(mediaPlayerZ.getEncryptString("123"));
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

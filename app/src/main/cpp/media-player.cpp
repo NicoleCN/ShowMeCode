@@ -49,7 +49,6 @@ Java_cn_shanghai_nicole_media_MediaPlayerZ_nativePrepareAsync(JNIEnv *env, jobje
     if (ffmpeg == NULL) {
         jniCallJava = new JNICallJava(javaVM, env, instance);
         ffmpeg = new FFmpeg(jniCallJava, url);
-        Log("创建ffmpeg");
         ffmpeg->prepareAsync();
     }
     env->ReleaseStringUTFChars(url_, url);
@@ -59,7 +58,6 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_cn_shanghai_nicole_media_MediaPlayerZ_nativePlay(JNIEnv *env, jobject instance) {
     if (ffmpeg != NULL) {
-        Log("ffmpeg->play()");
         ffmpeg->play();
     }
 }
@@ -71,4 +69,17 @@ Java_cn_shanghai_nicole_media_MediaPlayerZ_setSurface(JNIEnv *env, jobject insta
     if (ffmpeg != NULL) {
         ffmpeg->setSurface(surface);
     }
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_cn_shanghai_nicole_media_MediaPlayerZ_getEncryptString(JNIEnv *env, jobject instance,
+                                                            jstring str_) {
+    const char *str = env->GetStringUTFChars(str_, 0);
+
+    string encryptStr(str);
+    encryptStr.insert(0, "zbx");
+    encryptStr.insert(encryptStr.length(), "jiayou");
+    env->ReleaseStringUTFChars(str_, str);
+    return env->NewStringUTF(encryptStr.c_str());
 }
