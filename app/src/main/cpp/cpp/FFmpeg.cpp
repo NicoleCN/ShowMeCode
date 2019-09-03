@@ -25,6 +25,7 @@ void *threadReadPacket(void *context) {
         AVPacket *pPacket = av_packet_alloc();
         if (av_read_frame(pFFmpeg->avFormatContext, pPacket) >= 0) {
             if (pPacket->stream_index == pFFmpeg->audio->streamIndex) {
+//                Log("pushPacket");
                 pFFmpeg->audio->mpPacketQueue->push(pPacket);
             }
             //else if (pPacket->stream_index == pFFmpeg->pVideo->streamIndex) {
@@ -93,7 +94,6 @@ void FFmpeg::prepare(ThreadMode threadMode) {
     //打开资源
     Log("打开资源");
     res_open_input = avformat_open_input(&avFormatContext, url, NULL, NULL);
-    Log("res_open_input!=0");
     if (res_open_input != 0) {
         //av_err2str错误返回
         callPlayerJniError(threadMode, res_open_input, av_err2str(res_open_input));
@@ -109,9 +109,9 @@ void FFmpeg::prepare(ThreadMode threadMode) {
     }
     //查找音频流的index
     Log("查找音频流的index");
-    int audio_index = 0;
-    audio_index = av_find_best_stream(avFormatContext, AVMediaType::AVMEDIA_TYPE_AUDIO, -1, -1,
+    int audio_index= av_find_best_stream(avFormatContext, AVMediaType::AVMEDIA_TYPE_AUDIO, -1, -1,
                                       NULL, 0);
+    Log("查找音频流的index结束");
     if (audio_index < 0) {
         callPlayerJniError(threadMode, audio_index, av_err2str(audio_index));
         return;

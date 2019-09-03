@@ -21,13 +21,13 @@ extern "C" {
 class Media {
 public:
     int streamIndex = -1;
-    JNICallJava *jniCallJava;
-    PlayerStatus *playerStatus;
-    MpPacketQueue *mpPacketQueue;
+    JNICallJava *jniCallJava=NULL;
+    PlayerStatus *playerStatus=NULL;
+    MpPacketQueue *mpPacketQueue=NULL;
     /**
      * 因为要获取解码器信息 所以需要codecContext
      */
-    AVCodecContext *avCodecContext;
+    AVCodecContext *avCodecContext=NULL;
     /**
      * 视频时长
      */

@@ -40,6 +40,7 @@ public class MediaPlayerZ {
 
     // called from jni
     private void onPrepared() {
+        Log.e("jni", "C层onPrepared");
         if (mPreparedListener != null) {
             mPreparedListener.onPrepared();
         }

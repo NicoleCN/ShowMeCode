@@ -5,7 +5,6 @@
 #ifndef SHOWMECODE_FFMPEG_H
 #define SHOWMECODE_FFMPEG_H
 
-#include <jni.h>
 #include "Audio.h"
 #include "Video.h"
 #include "JNICallJava.h"
@@ -24,12 +23,12 @@ extern "C" {
 class FFmpeg {
 public:
     //全局的ffmpeg上下文
-    AVFormatContext *avFormatContext;
-    JNICallJava *jniCallJava;
-    char *url;
-    Audio *audio;
-    Video *video;
-    PlayerStatus *playerStatus;
+    AVFormatContext *avFormatContext = NULL;
+    JNICallJava *jniCallJava = NULL;
+    char *url = NULL;
+    Audio *audio = NULL;
+    Video *video=NULL;
+    PlayerStatus *playerStatus=NULL;
 public:
     FFmpeg(JNICallJava *jniCallJava, const char *url);
 

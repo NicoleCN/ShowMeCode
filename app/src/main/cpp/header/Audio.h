@@ -22,8 +22,8 @@ extern "C" {
 
 class Audio : public Media {
 public:
-    SwrContext *swrContext;
-    uint8_t *resampleOutBuffer;
+    SwrContext *swrContext=NULL;
+    uint8_t *resampleOutBuffer=NULL;
 public:
     Audio(int audioIndex, JNICallJava *jniCallJava, PlayerStatus *playerStatus);
 
