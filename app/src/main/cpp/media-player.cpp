@@ -49,6 +49,7 @@ Java_cn_shanghai_nicole_media_MediaPlayerZ_nativePrepareAsync(JNIEnv *env, jobje
     if (ffmpeg == NULL) {
         jniCallJava = new JNICallJava(javaVM, env, instance);
         ffmpeg = new FFmpeg(jniCallJava, url);
+        Log("创建ffmpeg");
         ffmpeg->prepareAsync();
     }
     env->ReleaseStringUTFChars(url_, url);
@@ -58,6 +59,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_cn_shanghai_nicole_media_MediaPlayerZ_nativePlay(JNIEnv *env, jobject instance) {
     if (ffmpeg != NULL) {
+        Log("ffmpeg->play()");
         ffmpeg->play();
     }
 }

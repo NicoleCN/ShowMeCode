@@ -34,6 +34,16 @@ public:
     int duration = 0;
 
     /**
+     * 上次更新的时间（回调到 java 层）
+     */
+    double lastUpdateTime = 0;
+
+    /**
+     * 时间基
+     */
+    AVRational timeBase;
+
+    /**
      * 当前播放时间
      */
     double currentTime;
@@ -61,7 +71,7 @@ public:
      * @param threadMode
      * @param avFormatContext
      */
-//    virtual void privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext);
+    virtual void privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext)=0;
 };
 
 

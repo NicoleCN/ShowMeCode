@@ -19,8 +19,40 @@ FFmpeg::~FFmpeg() {
     release();
 }
 
+void *threadReadPacket(void *context) {
+    FFmpeg *pFFmpeg = (FFmpeg *) context;
+    while (pFFmpeg->playerStatus != NULL && !pFFmpeg->playerStatus->isExit) {
+        AVPacket *pPacket = av_packet_alloc();
+        if (av_read_frame(pFFmpeg->avFormatContext, pPacket) >= 0) {
+            if (pPacket->stream_index == pFFmpeg->audio->streamIndex) {
+                pFFmpeg->audio->mpPacketQueue->push(pPacket);
+            }
+            //else if (pPacket->stream_index == pFFmpeg->pVideo->streamIndex) {
+                //pFFmpeg->pVideo->pPacketQueue->push(pPacket);
+            //} else {
+                // 1. 解引用数据 data ， 2. 销毁 pPacket 结构体内存  3. pPacket = NULL
+            //    av_packet_free(&pPacket);
+            //}
+        } else {
+            // 1. 解引用数据 data ， 2. 销毁 pPacket 结构体内存  3. pPacket = NULL
+            av_packet_free(&pPacket);
+            // 睡眠一下，尽量不去消耗 cpu 的资源，也可以退出销毁这个线程
+            // break;
+        }
+    }
+    return 0;
+}
 void FFmpeg::play() {
-
+    // 一个线程去读取 Packet
+    pthread_t readPacketThreadT;
+    pthread_create(&readPacketThreadT, NULL, threadReadPacket, this);
+    pthread_detach(readPacketThreadT);
+    if (audio != NULL) {
+        audio->play();
+    }
+    /*if (video != NULL) {
+        video->play();
+    }*/
 }
 
 void FFmpeg::setSurface(jobject obj) {
@@ -49,21 +81,26 @@ void FFmpeg::prepareAsync() {
     //其实就是传了个对象上下文 this
     pthread_create(&prepareThreadT, NULL, threadPrepare, this);
     pthread_detach(prepareThreadT);
+    Log("创建一个线程去播放");
 }
 
 //真正prepare
 void FFmpeg::prepare(ThreadMode threadMode) {
+    Log("prepare--threadMode--");
     av_register_all();
     avformat_network_init();
     int res_open_input = 0;
     //打开资源
+    Log("打开资源");
     res_open_input = avformat_open_input(&avFormatContext, url, NULL, NULL);
+    Log("res_open_input!=0");
     if (res_open_input != 0) {
         //av_err2str错误返回
         callPlayerJniError(threadMode, res_open_input, av_err2str(res_open_input));
         return;
     }
     //查找信息
+    Log("查找信息");
     int res_find_stream_info = 0;
     res_find_stream_info = avformat_find_stream_info(avFormatContext, NULL);
     if (res_find_stream_info < 0) {
@@ -71,6 +108,7 @@ void FFmpeg::prepare(ThreadMode threadMode) {
         return;
     }
     //查找音频流的index
+    Log("查找音频流的index");
     int audio_index = 0;
     audio_index = av_find_best_stream(avFormatContext, AVMediaType::AVMEDIA_TYPE_AUDIO, -1, -1,
                                       NULL, 0);
@@ -78,19 +116,20 @@ void FFmpeg::prepare(ThreadMode threadMode) {
         callPlayerJniError(threadMode, audio_index, av_err2str(audio_index));
         return;
     }
-    //audio = new Audio(audio_index, jniCallJava, playerStatus);
-    //audio->analysisStream(threadMode, avFormatContext);
+    audio = new Audio(audio_index, jniCallJava, playerStatus);
+    audio->analysisStream(threadMode, avFormatContext);
+    Log("audio处理相关部分");
 
-    //查找视频流
+    /*//查找视频流
     int video_index = 0;
     video_index = av_find_best_stream(avFormatContext, AVMediaType::AVMEDIA_TYPE_VIDEO, -1, -1,
                                       NULL, 0);
     //这里如果小于0 可能只有音频没有视频
     if (audio_index < 0) {
         callPlayerJniError(threadMode, video_index, av_err2str(video_index));
-    }
-
-
+    }*/
+    // 回调到 Java 告诉他准备好了
+    jniCallJava->callPlayerPrepared(threadMode);
 }
 
 void FFmpeg::release() {
@@ -127,9 +166,5 @@ void FFmpeg::callPlayerJniError(ThreadMode threadMode, int code, char *msg) {
     jniCallJava->callPlayerError(threadMode, code, msg);
 }
 
-
-void *threadReadPacket(void *context) {
-    return NULL;
-}
 
 

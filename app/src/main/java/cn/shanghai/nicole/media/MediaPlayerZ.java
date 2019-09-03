@@ -1,6 +1,7 @@
 package cn.shanghai.nicole.media;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Surface;
 
 /***
@@ -46,6 +47,7 @@ public class MediaPlayerZ {
 
     public void setDataSource(String url) {
         this.url = url;
+        Log.e("jni", "url->>" + url);
     }
 
 

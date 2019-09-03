@@ -1,20 +1,23 @@
 package cn.shanghai.nicole;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.shanghai.nicole.albumselector.AlbumSelectorManager;
 import cn.shanghai.nicole.loopview.LoopView;
+import cn.shanghai.nicole.media.MediaPlayerZ;
+import cn.shanghai.nicole.media.MediaPreparedListener;
 
-public class MainActivity extends AppCompatActivity {
-    static {
-        System.loadLibrary("media-player");
-    }
+public class MainActivity extends AppCompatActivity implements MediaPreparedListener {
+
+    private MediaPlayerZ mediaPlayerZ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         LoopView loopView = findViewById(R.id.loopView);
         TextView textView = findViewById(R.id.tv);
         loopView.setStringItems(getDataList());
-
+        mediaPlayerZ = new MediaPlayerZ();
+        mediaPlayerZ.setPreparedListener(this);
         textView.setText("123");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +37,13 @@ public class MainActivity extends AppCompatActivity {
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent, 1);*/
 
-                AlbumSelectorManager.getInstance().startAlbumSelect(MainActivity.this);
+//                AlbumSelectorManager.getInstance().startAlbumSelect(MainActivity.this);
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.mp3";
+                File file = new File(path);
+                if (file.exists()) {
+                    mediaPlayerZ.setDataSource(path);
+                    mediaPlayerZ.prepareAsync();
+                }
             }
         });
 
@@ -46,5 +56,10 @@ public class MainActivity extends AppCompatActivity {
             dataList.add(String.valueOf(i).concat("公斤"));
         }
         return dataList;
+    }
+
+    @Override
+    public void onPrepared() {
+        mediaPlayerZ.play();
     }
 }

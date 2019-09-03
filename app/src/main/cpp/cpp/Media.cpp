@@ -18,7 +18,7 @@ Media::~Media() {
 void Media::analysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
     publicAnalysisStream(threadMode, avFormatContext);
     //给子类去实现
-//    privateAnalysisStream(threadMode, avFormatContext);
+    privateAnalysisStream(threadMode, avFormatContext);
 }
 
 void Media::publicAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
@@ -53,7 +53,7 @@ void Media::publicAnalysisStream(ThreadMode threadMode, AVFormatContext *avForma
         return;
     }
     duration = avFormatContext->duration;
-//    avFormatContext->start_time
+    timeBase = avFormatContext->streams[streamIndex]->time_base;
 }
 
 void Media::callPlayerJniError(ThreadMode threadMode, int code, char *msg) {

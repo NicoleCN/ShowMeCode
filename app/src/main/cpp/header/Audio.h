@@ -22,7 +22,6 @@ extern "C" {
 
 class Audio : public Media {
 public:
-    AVFormatContext *formatContext;
     SwrContext *swrContext;
     uint8_t *resampleOutBuffer;
 public:
@@ -30,9 +29,15 @@ public:
 
     ~Audio();
 
+    void play();
+
     void release() ;
 
+    void initCreateOpenSLES();
+
     void privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) ;
+
+    int resampleAudio();
 };
 
 
