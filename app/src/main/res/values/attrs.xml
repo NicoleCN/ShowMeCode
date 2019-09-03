@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoopView">
+        <attr name="app_loop_view_textSize" format="integer" />
+        <attr name="app_loop_view_lineSpace" format="float" />
+        <attr name="app_loop_view_centerTextColor" format="integer" />
+        <attr name="app_loop_view_outerTextColor" format="integer" />
+        <attr name="app_loop_view_dividerTextColor" format="integer" />
+        <attr name="app_loop_view_itemsVisibleCount" format="integer" />
+        <attr name="app_loop_view_isLoop" format="boolean" />
+        <attr name="app_loop_view_initialPosition" format="integer" />
+        <attr name="app_loop_view_scaleX" format="float" />
+    </declare-styleable>
+</resources>
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.shanghai.nicole.albumselector.widget.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="top">
+
+    <cn.shanghai.nicole.albumselector.widget.SquaredImageView
+        android:id="@+id/holder_album_select_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/holder_album_select_check_ImageView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dp"
+        android:src="@mipmap/ic_launcher"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <cn.shanghai.nicole.albumselector.widget.SquaredTextView
+        android:id="@+id/holder_album_select_index_TextView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textSize="16dp"
+        tools:text="···" />
+
+
+    <LinearLayout
+        android:id="@+id/holder_album_select_video_LinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/holder_album_select_video_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:09"
+            android:textColor="#fff"
+            android:textSize="8sp" />
+    </LinearLayout>
+
+
+    <!--不可选择用的蒙版-->
+    <ImageView
+        android:id="@+id/holder_album_select_mask_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0000"
+        android:elevation="10dp"
+        android:visibility="visible" />
+</cn.shanghai.nicole.albumselector.widget.SquareRelativeLayout>
