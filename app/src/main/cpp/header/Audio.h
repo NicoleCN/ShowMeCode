@@ -20,7 +20,7 @@ extern "C" {
 #include <libswresample/swresample.h>
 };
 
-class Audio : Media {
+class Audio : public Media {
 public:
     AVFormatContext *formatContext;
     SwrContext *swrContext;
@@ -30,8 +30,9 @@ public:
 
     ~Audio();
 
-private:
-    void release() override;
+    void release() ;
+
+    void privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) ;
 };
 
 

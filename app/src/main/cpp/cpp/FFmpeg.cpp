@@ -78,8 +78,8 @@ void FFmpeg::prepare(ThreadMode threadMode) {
         callPlayerJniError(threadMode, audio_index, av_err2str(audio_index));
         return;
     }
-    audio = new Audio(audio_index, jniCallJava, playerStatus);
-    audio->analysisStream(threadMode, avFormatContext);
+    //audio = new Audio(audio_index, jniCallJava, playerStatus);
+    //audio->analysisStream(threadMode, avFormatContext);
 
     //查找视频流
     int video_index = 0;

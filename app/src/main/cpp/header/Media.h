@@ -48,20 +48,20 @@ public:
     virtual void release();
 
     void callPlayerJniError(ThreadMode threadMode, int code, char *msg);
-    /**
-     * 子类需要重写分析流的方法 video需要
-     * @param threadMode
-     * @param avFormatContext
-     */
-    virtual void privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext);
 
-private:
     /**
      * 公共分析流的方法
      * @param threadMode
      * @param avFormatContext
      */
     void publicAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext);
+
+    /**
+     * 子类需要重写分析流的方法 video需要
+     * @param threadMode
+     * @param avFormatContext
+     */
+//    virtual void privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext);
 };
 
 

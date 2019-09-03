@@ -25,3 +25,7 @@ void Audio::release() {
         swrContext = NULL;
     }
 }
+
+void Audio::privateAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
+
+}

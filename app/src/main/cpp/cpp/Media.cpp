@@ -17,7 +17,8 @@ Media::~Media() {
 
 void Media::analysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
     publicAnalysisStream(threadMode, avFormatContext);
-    privateAnalysisStream(threadMode, avFormatContext);
+    //给子类去实现
+//    privateAnalysisStream(threadMode, avFormatContext);
 }
 
 void Media::publicAnalysisStream(ThreadMode threadMode, AVFormatContext *avFormatContext) {
