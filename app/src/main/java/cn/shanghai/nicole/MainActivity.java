@@ -7,10 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import cn.shanghai.nicole.loopview.LoopView;
 import cn.shanghai.nicole.media.MediaPlayerZ;
 import cn.shanghai.nicole.media.MediaPreparedListener;
 
@@ -22,9 +19,7 @@ public class MainActivity extends AppCompatActivity implements MediaPreparedList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LoopView loopView = findViewById(R.id.loopView);
         TextView textView = findViewById(R.id.tv);
-        loopView.setStringItems(getDataList());
         mediaPlayerZ = new MediaPlayerZ();
         mediaPlayerZ.setPreparedListener(this);
         textView.setText(mediaPlayerZ.getEncryptString("123"));
@@ -50,13 +45,7 @@ public class MainActivity extends AppCompatActivity implements MediaPreparedList
 
     }
 
-    private List<String> getDataList() {
-        List<String> dataList=new ArrayList<>();
-        for (int i = 10; i <= 100; i++) {
-            dataList.add(String.valueOf(i).concat("公斤"));
-        }
-        return dataList;
-    }
+
 
     @Override
     public void onPrepared() {
